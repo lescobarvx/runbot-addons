@@ -21,6 +21,7 @@ class RunbotBuild(models.Model):
     repo_host = fields.Char()
     repo_owner = fields.Char()
     repo_project = fields.Char()
+    build_button = fields.Char(compute='_build_button')
     status_build = fields.Char(compute='_status_build')
     host_name = fields.Char(compute='_host_name')
     branch_name = fields.Char(compute='_branch_name')
@@ -156,6 +157,18 @@ class RunbotBuild(models.Model):
             record.shareissue_link = link
 
     @api.multi
+    def _build_button(self):
+        for record in self:
+            btn = '<div itemscope itemtype="http://schema.org/EmailMessage">'
+            btn += '<div itemprop="potentialAction" itemscope '
+            btn += 'itemtype="http://schema.org/ViewAction">'
+            btn += '<link itemprop="url" href="http://172.17.0.2:8069%s"/>'
+            btn += '<meta itemprop="name" content="View Log Build"/>'
+            btn += '</div><meta itemprop="description" '
+            btn += 'content="View Log build on Runbot Vauxoo"/></div>'
+            record.build_button = btn % (record.log_link)
+
+    @api.multi
     def action_send_email(self):
         self.ensure_one()
         ir_model_data = self.env['ir.model.data']
@@ -194,7 +207,7 @@ class RunbotBuild(models.Model):
         partner_obj = self.env['res.partner']
         for record in self:
             name_build = record.dest
-            email_to = 'luiseev@gmail.com' #record.committer_email
+            email_to = 'lescobar.n4@gmail.com' #record.committer_email
             partner_id = partner_obj.find_or_create(email_to)
             partner = partner_obj.browse(partner_id)
             if partner not in record.message_partner_ids:

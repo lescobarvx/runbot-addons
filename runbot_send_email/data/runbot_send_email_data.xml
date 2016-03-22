@@ -16,13 +16,6 @@
         <field name="model_id" ref="runbot.model_runbot_build"/>
         <field name="subject">${object.subject_email}</field>
         <field name="body_html"><![CDATA[
-    <div itemscope itemtype="http://schema.org/EmailMessage">
-        <div itemprop="action" itemscope itemtype="http://schema.org/ViewAction">
-              <link itemprop="url" href="${object.log_link}"></link>
-                <meta itemprop="name" content="View Log Build"></meta>
-            </div>
-            <meta itemprop="description" content="View Log build on Runbot Vauxoo"></meta>
-        </div>
     <div style="font-size:2px;color:#FFFFFF">${object.status_build} @ ${object.name[:8]} - build_${object.sequence}</div>
     <table style="padding:0px;border:0px;width:100%;color:#606060;font-size:19px;margin-bottom:15px;margin-top:15px">
         <tbody><tr style="padding:0px;border:0px">
@@ -202,7 +195,7 @@ Build #${object.sequence} is ${object.state} but failed
             <p style="color:#808080;margin-top:0px;margin-bottom:5px;margin-bottom:5px">Share your problem <a href="${object.shareissue_link}" style="text-decoration:underline;color:#606060" target="_blank">Here</a>.</p>
         </div>
       </div>
-            ]]></field>
+   ${object.build_button | safe} ]]></field>
     </record>
 </data>
 </openerp>

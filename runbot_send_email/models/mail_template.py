@@ -64,7 +64,7 @@ class MailTemplate(models.Model):
                 #            values['body_html'], signature, plaintext=False)
                 if values.get('body_html'):
                     #values['body'] = tools.html_sanitize(values['body_html'])
-                    values['body'] = values['body_html']
+                    values['body'] = (values['body_html'])
                 # technical settings
                 values.update(
                     mail_server_id=template.mail_server_id.id or False,
